@@ -25,6 +25,7 @@ void delay_50us(uint16_t us50)
 extern "C" //setup and loop are called from main.c
 {
 extern void delay_500ms(void);
+#include "lcd.h";
 
 void setup(void)
 {
@@ -42,7 +43,10 @@ void setup(void)
 		led_neg();
 //		PINB |= 0b10000000;
 //		PINB(LED_PIN) |= _MSK(LED_PIN);
-		fprintf_P(uart0io, PSTR("cycle\n"));
+//		fprintf_P(uart0io, PSTR("cycle %d\n"), timer0_ms);
+		lcd_cmd(LCD_CMD_SETDDRAMADDR);
+		fprintf_P(lcdio, PSTR("cycle %ld    "), timer0_ms);
+//		fprintf_P(uart0io, PSTR("cycle %ld\n"), timer0_ms);
 	}
 }
 

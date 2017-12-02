@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\timer0.c"
+				>
+			</File>
+			<File
 				RelativePath=".\uart.c"
 				>
 			</File>
@@ -221,6 +225,10 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\timer0.h"
 				>
 			</File>
 			<File

@@ -9,6 +9,7 @@
 #include "config.h"
 #include "io_atmega2560.h"
 
+extern uint32_t timer0_ms;
 
 #ifdef UART0_FILE
 #define uart0io (&_uart0io)

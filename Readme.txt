@@ -3,13 +3,13 @@ AVR atmega2560 kernel for EINSY 3D printer board
 
 MODULES:
 
-config: main configuration file
+config: global configuration file
  lang: C
  source: config.h
 
-timer: 1ms timer driver
+timer0: 1milisecond timer0 driver
  lang: C
- source: config.h
+ source: timer0.h, timer0.c
 
 io_atmega2560 - minimalistic direct i/o pin access for mega2560
  lang: C

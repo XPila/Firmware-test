@@ -1,6 +1,5 @@
 //uart.c
 #include "uart.h"
-#include <inttypes.h>
 #include <avr/io.h>
 
 #define UART_BAUD_SELECT(baudRate,xtalCpu) (((float)(xtalCpu))/(((float)(baudRate))*8.0)-1.0+0.5)

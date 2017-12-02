@@ -1,5 +1,6 @@
 //main.c
 #include "main.h"
+#include "timer0.h"
 #include "uart.h"
 #include "lcd.h"
 
@@ -87,6 +88,9 @@ extern void delay_500ms(void);
 
 int main(void)
 {
+	cli();
+
+	timer0_ini();
 
 //	DDR(LED_PIN) |= __MSK(LED_PIN);
 //	PORT(LED_PIN) |= __MSK(LED_PIN);
@@ -121,6 +125,7 @@ int main(void)
 	led_on();
 #endif //LED_PIN
 
+	sei();
 
 	rbuf_ini(buf, 13);
 	rbuf_put(buf, 'A');
@@ -138,7 +143,7 @@ int main(void)
 		delay_500ms();
 	}
 
-
+	// Arduino-like setup and looping
 	setup();
 	while (1)
 		loop();
