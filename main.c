@@ -5,6 +5,13 @@
 extern void setup(void);
 extern void loop(void);
 
+void main_100us(void)
+{
+}
+
+void main_1ms(void)
+{
+}
 
 int main(void)
 {

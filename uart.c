@@ -62,18 +62,18 @@ void uart0_ini(void)
 int uart0_rx(void)
 {
 #ifdef UART0_IBUF
-#ifdef UART0_RXNB
+#ifdef UART0_INBL
 	if (rbuf_empty(uart0_ibuf)) return -1; // for non blocking mode return -1
-#else //UART0_RXNB
+#else //UART0_INBL
 	while (rbuf_empty(uart0_ibuf)); // wait until byte available
-#endif //UART0_RXNB
+#endif //UART0_INBL
 	return rbuf_get(uart0_ibuf);
 #else //UART0_IBUF
-#ifdef UART0_RXNB
+#ifdef UART0_INBL
 	if (!uart0_rxcomplete) return -1; // for non blocking mode return -1
-#else //UART0_RXNB
+#else //UART0_INBL
 	while (!uart0_rxcomplete); // wait until byte available
-#endif //UART0_RXNB
+#endif //UART0_INBL
 	UCSR0A |= (1 << RXC0); // delete RXCflag
 	return UDR0; // receive byte
 #endif //UART0_IBUF
@@ -84,11 +84,11 @@ int uart0_tx(uint8_t c)
 #ifdef UART0_OBUF
 	if (UCSR0B & (1 << TXCIE0))
 	{
-#ifdef UART0_TXNB
+#ifdef UART0_ONBL
 		if (rbuf_put(uart0_obuf, c) < 0) return -1;
-#else //UART0_TXNB
+#else //UART0_ONBL
 		while (rbuf_put(uart0_obuf, c) < 0);
-#endif //UART0_TXNB
+#endif //UART0_ONBL
 	}
 	else
 	{
@@ -96,14 +96,14 @@ int uart0_tx(uint8_t c)
 		UDR0 = c; //transmit the byte
 	}
 #else //UART0_OBUF
-#ifdef UART0_TXNB
+#ifdef UART0_ONBL
 	if (!uart0_txready) return -1; // for non blocking mode return -1
 	UDR0 = c; // transmit byte
-#else //UART0_TXNB
+#else //UART0_ONBL
 	UDR0 = c; // transmit byte
 	while (!uart0_txcomplete); // wait until byte sent
 	UCSR0A |= (1 << TXC0); // delete TXCflag
-#endif //UART0_TXNB
+#endif //UART0_ONBL
 #endif //UART0_OBUF
 	return 0;
 }

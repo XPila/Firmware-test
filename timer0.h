@@ -10,6 +10,7 @@ extern uint8_t timer0_100us;
 extern uint32_t timer0_ms;
 
 extern void timer0_ini(void);
+extern uint32_t timer0_us(void);
 
 
 #endif //_TIMER0_H

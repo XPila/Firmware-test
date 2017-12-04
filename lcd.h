@@ -37,8 +37,17 @@ extern FILE _lcdio;
 
 
 extern void lcd_ini(void);
-extern void lcd_cmd(uint8_t cmd);
-extern void lcd_chr(uint8_t chr);
+extern void lcd_cmd(uint8_t cmd, uint8_t wait);
+extern void lcd_chr(uint8_t chr, uint8_t wait);
+extern int lcd_put(uint8_t c);
+
+#ifdef LCD_KNOB
+extern int lcd_get(void);
+#endif //LCD_KNOB
+
+#ifdef LCD_OBUF
+extern void lcd_100us(void);
+#endif //LCD_OBUF
 
 
 #endif //_LCD_H

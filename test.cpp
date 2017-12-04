@@ -29,7 +29,7 @@ void delay_50us(uint16_t us50)
 }
 
 
-extern void delay_500ms(void);
+//extern void delay_500ms(void);
 //#include "rbuf.h";
 //#include "lcd.h";
 //#include "uart.h";
@@ -40,32 +40,44 @@ void setup(void)
 {
 	while (1)
 	{
-		delay_500ms();
+//		for (int c = 0; c = 10; c++)
+			delay_50us(5000); //
 		led_neg();
-
-		lcd_cmd(LCD_CMD_SETDDRAMADDR);
+/*
 
 		//get start time
-		cli();
-		uint32_t time_ms = timer0_ms;
-		uint8_t time_100us = timer0_100us;
-		sei();
+		uint32_t time_us = timer0_us();
 
 		//print long string to serial and meassure time
 		fprintf_P(uart0io, PSTR("abcdefghijklmnopqrstuvwxyz cycle %ld\n"), timer0_ms);
 
 		//get end time
-		cli();
-		uint32_t time_ms1 = timer0_ms;
-		uint8_t time_100us1 = timer0_100us;
-		sei();
+		uint32_t time_us1 = timer0_us();
+
+		int kbd = lcd_get();
 
 		//calc delay
-		uint32_t time0 = 10 * time_ms + time_100us;
-		uint32_t time1 = 10 * time_ms1 + time_100us1;
-		uint32_t time = time1 - time0;
+		uint32_t time = time_us1 - time_us;
+
+*/
+		uint32_t time;
+
+//		lcd_put('a');
 		//print delay to LCD
-		fprintf_P(lcdio, PSTR("delay %ld (x100us)   "), time);
+		lcd_cmd(LCD_CMD_SETDDRAMADDR, 1);
+		//delay_50us(50);
+
+		//get start time
+		uint32_t time_us = timer0_us();
+
+		fprintf_P(lcdio, PSTR("abcdefghijklmnopqrstuw delay %ld us    "), time);
+
+		//get end time
+		uint32_t time_us1 = timer0_us();
+		time = time_us1 - time_us;
+
+//		lcd_cmd(LCD_CMD_SETDDRAMADDR+20);
+		//fprintf_P(lcdio, PSTR("kbd %d"), kbd);
 //		int uart_tx = rbuf_cnt(uart0_obuf);
 //		fprintf_P(lcdio, PSTR("uart0 tx %d   "), uart_tx);
 	}
