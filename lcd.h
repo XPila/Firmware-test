@@ -1,8 +1,13 @@
+//lcd.h
 #ifndef _LCD_H
 #define _LCD_H
 
 #include <inttypes.h>
 #include "config.h"
+
+#if (defined(LCD_FILE))
+#include <stdio.h>
+#endif
 
 #define LCD_CMD_CLEARDISPLAY    0x01
 #define LCD_CMD_RETURNHOME      0x02
@@ -24,8 +29,16 @@
 #define LCD_FLG_ENTRYLEFT       0x01
 #define LCD_FLG_ENTRYSHIFTINC   0x02
 
+
+#ifdef LCD_FILE
+#define lcdio (&_lcdio)
+extern FILE _lcdio;
+#endif //LCD_FILE
+
+
 extern void lcd_ini(void);
 extern void lcd_cmd(uint8_t cmd);
 extern void lcd_chr(uint8_t chr);
+
 
 #endif //_LCD_H

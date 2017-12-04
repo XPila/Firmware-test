@@ -3,8 +3,21 @@
 #include <avr/io.h>
 #include "io_atmega2560.h"
 
+
 #ifdef LCD_4BIT
 
+#ifdef LCD_FILE
+FILE _lcdio = {0};
+int lcd_putchar(char c, FILE *stream)
+{
+	lcd_chr(c);
+	return 0;
+}
+int lcd_getchar(FILE *stream)
+{
+	return 0;
+}
+#endif //LCD_FILE
 
 //delay macros
 #define delay_125ns() asm("nop\nnop")            //2cycles = 125ns@16MHz
@@ -117,6 +130,9 @@ void lcd_ini(void)
 	lcd_cmd(LCD_CMD_CLEARDISPLAY);
 	lcd_cmd(LCD_CMD_ENTRYMODESET | LCD_FLG_ENTRYSHIFTINC);
 	lcd_cmd(LCD_CMD_DISPLAYCONTROL | LCD_FLG_DISPLAYON);
+#ifdef LCD_FILE
+	fdev_setup_stream(lcdio, lcd_putchar, lcd_getchar, _FDEV_SETUP_WRITE | _FDEV_SETUP_READ); //setup lcd i/o stream
+#endif //LCD_FILE
 }
 
 void lcd_cmd(uint8_t cmd)

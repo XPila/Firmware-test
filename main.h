@@ -8,23 +8,11 @@
 #include <avr/pgmspace.h>
 #include "config.h"
 #include "io_atmega2560.h"
+#include "timer0.h"
+#include "rbuf.h"
+#include "uart.h"
+#include "lcd.h"
 
-extern uint32_t timer0_ms;
-
-#ifdef UART0_FILE
-#define uart0io (&_uart0io)
-extern FILE _uart0io;
-#endif //UART0_FILE
-
-#ifdef UART1_FILE
-#define uart1io (&_uart1io)
-extern FILE _uart1io;
-#endif //UART0_FILE
-
-#ifdef LCD_FILE
-#define lcdio (&_lcdio)
-extern FILE _lcdio;
-#endif //LCD_FILE
 
 #ifdef LED_PIN
 #define led_ini() { DDR(LED_PIN) |= __MSK(LED_PIN); }

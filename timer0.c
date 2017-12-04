@@ -4,19 +4,25 @@
 #include <avr/interrupt.h>
 
 
-uint32_t timer0_ms = 0; // 32bit milisecond counter (overflow in 49.71 days)
+uint8_t timer0_100us; // 8bit 100microsecond counter
+uint32_t timer0_ms; // 32bit milisecond counter (overflow in 49.71 days)
 
 
 void timer0_ini(void)
 {
+	timer0_100us = 0; // initialize 100us counter to zero
 	timer0_ms = 0; // initialize milisecond counter to zero
-	TCCR0B |= (1 << CS00) | (1 << CS01); // set up timer with fclk/64 prescaling
-	TCNT0 = 6; // initialize counter - overflow in 250 cycles (=1ms@16MHz)
+	TCCR0B |= TIMER0_PRESCALER; // set up timer with fclk/64 prescaling
+	TCNT0 = (256 - TIMER0_CYC_100US); // initialize counter - overflow in 25 cycles (=100us@16MHz)
 	TIMSK0 |= (1 << TOIE0); // enable timer overflow interrupt
 }
 
 ISR(TIMER0_OVF_vect)
 {
-	TCNT0 = 6; // initialize counter - overflow in 250 cycles (=1ms@16MHz)
-	timer0_ms++; // increment milisecond counter
+	TCNT0 = (256 - TIMER0_CYC_100US); // initialize counter - overflow in 25 cycles (=100us@16MHz)
+	if (++timer0_100us == 10)
+	{
+		timer0_100us = 0; // reset 100us counter
+		timer0_ms++; // increment milisecond counter
+	}
 }

@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rbuf.c"
+				>
+			</File>
+			<File
 				RelativePath=".\test.cpp"
 				>
 			</File>
@@ -225,6 +229,10 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rbuf.h"
 				>
 			</File>
 			<File
