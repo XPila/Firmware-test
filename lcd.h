@@ -49,5 +49,10 @@ extern int lcd_get(void);
 extern void lcd_100us(void);
 #endif //LCD_OBUF
 
+#define ESC_2J     "\x1b[2J"
+#define ESC_25h    "\x1b[?25h"
+#define ESC_25l    "\x1b[?25l"
+#define ESC_H(c,r) "\x1b["#r";"#c"H"
+
 
 #endif //_LCD_H

@@ -64,13 +64,13 @@ void setup(void)
 
 //		lcd_put('a');
 		//print delay to LCD
-		lcd_cmd(LCD_CMD_SETDDRAMADDR, 1);
+		//lcd_cmd(LCD_CMD_SETDDRAMADDR, 1);
 		//delay_50us(50);
 
 		//get start time
 		uint32_t time_us = timer0_us();
 
-		fprintf_P(lcdio, PSTR("abcdefghijklmnopqrstuw delay %ld us    "), time);
+		fprintf_P(lcdio, PSTR(ESC_2J"abcdefghijklmnopqrst"ESC_H(0,1)"delay %ld us    "), time);
 
 		//get end time
 		uint32_t time_us1 = timer0_us();

@@ -5,9 +5,9 @@
 #define LED_PIN 13
 
 //TIMER0 configuration
-#define TIMER0_PRESCALER   (1 << CS00) | (1 << CS01)
-#define TIMER0_CYC_100US   25
-//#define TIMER0_CB_100US    lcd_100us
+#define TIMER0_PRESCALER   (1 << CS00) | (1 << CS01) // f/64
+#define TIMER0_CYC_100US   25                        // 25cyces = 100us
+#define TIMER0_CB_100US    lcd_100us                 // lcd callback
 #define TIMER0_CB_1MS      main_1ms
 
 //UART0 configuration
@@ -23,10 +23,11 @@
 #define LCD_4BIT        // 4bit mode
 #define LCD_KNOB        // lcd knob input
 //#define LCD_IBUF    8   // input buffer size (for knob data input)
-//#define LCD_OBUF   64   // output buffer size (for lcd data output)
+#define LCD_OBUF   64   // output buffer size (for lcd data output)
 #define LCD_INBL        // input non blocking mode
 //#define LCD_ONBL        // output non blocking mode
 #define LCD_FILE        // lcd file stream lcdio
+#define LCD_ESCC        // lcd escape codes
 //LCD pin connection
 #define LCD_PIN_EN 61   // enable signal
 #define LCD_PIN_RS 82   // register select signal
@@ -36,8 +37,8 @@
 #define LCD_PIN_D7 71   // data line 7
 #define LCD_PIN_BL 32   // back light control
 //buttons are directly attached using AUX-2
-#define LCD_PIN_BTN_EN1  72 // 
-#define LCD_PIN_BTN_EN2  14 // 
+#define LCD_PIN_BTN_EN1  72 // phase1
+#define LCD_PIN_BTN_EN2  14 // phase2
 #define LCD_PIN_BTN_ENC   9 // the click
 
 
