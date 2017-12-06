@@ -12,6 +12,8 @@
 #include "rbuf.h"
 #include "uart.h"
 #include "lcd.h"
+#include "swspi.h"
+#include "w25x20cl.h"
 
 
 #ifdef LED_PIN
@@ -20,5 +22,6 @@
 #define led_on() { PORT(LED_PIN) &= ~__MSK(LED_PIN); }
 #define led_neg() { PIN(LED_PIN) |= __MSK(LED_PIN); }
 #endif //LED_PIN
+
 
 #endif //_MAIN_H

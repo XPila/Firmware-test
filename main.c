@@ -36,6 +36,20 @@ int main(void)
 	led_on();
 #endif //LED_PIN
 
+	DDR(X_TMC2130_CS) |= __MSK(X_TMC2130_CS);
+	DDR(Y_TMC2130_CS) |= __MSK(Y_TMC2130_CS);
+	DDR(Z_TMC2130_CS) |= __MSK(Z_TMC2130_CS);
+	DDR(E_TMC2130_CS) |= __MSK(E_TMC2130_CS);
+	PORT(X_TMC2130_CS) |= __MSK(X_TMC2130_CS);
+	PORT(Y_TMC2130_CS) |= __MSK(Y_TMC2130_CS);
+	PORT(Z_TMC2130_CS) |= __MSK(Z_TMC2130_CS);
+	PORT(E_TMC2130_CS) |= __MSK(E_TMC2130_CS);
+
+
+	swspi_init();
+
+	w25x20cl_init();
+
 	sei();
 
 	// Arduino-like setup and looping

@@ -35,11 +35,24 @@
 #define LCD_PIN_D5 70   // data line 5
 #define LCD_PIN_D6 85   // data line 6
 #define LCD_PIN_D7 71   // data line 7
-#define LCD_PIN_BL 32   // back light control
+//#define LCD_PIN_BL 32   // back light control
 //buttons are directly attached using AUX-2
 #define LCD_PIN_BTN_EN1  72 // phase1
 #define LCD_PIN_BTN_EN2  14 // phase2
 #define LCD_PIN_BTN_ENC   9 // the click
 
+//SWSPI pin connection
+#define SWSPI_MISO  50
+#define SWSPI_MOSI  51
+#define SWSPI_SCK   52
+#define SWSPI_CFG   0x04
+
+//W25X20CL configuration
+#define W25X20CL_PIN_CS  32
+
+#define X_TMC2130_CS        41
+#define Y_TMC2130_CS        39
+#define Z_TMC2130_CS        67
+#define E_TMC2130_CS        66
 
 #endif //_CONFIG_H

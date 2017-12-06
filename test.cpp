@@ -1,25 +1,40 @@
-
-//#include "main.h"
-
 //test.cpp
+extern "C"
+{
+#include "main.h"
+}
 
-/*
-class Ctest
+
+//application class
+static class Capp
 {
 public:
-	Ctest();
-};
+	void setup(void);
+	void loop(void);
+protected:
+	uint8_t m_view;
+} app; //application instance
 
-Ctest::Ctest()
+class Cstr
 {
-	fprintf_P(lcdio, PSTR("Ctest"));
-}
-*/
-
+public:
+	Cstr(const char* PROGMEM pstr);
+};
 
 extern "C" //setup and loop are called from main.c
 {
-#include "main.h"
+
+void setup(void)
+{
+	app.setup();
+}
+
+void loop(void)
+{
+	app.setup();
+}
+
+}
 
 void delay_50us(uint16_t us50)
 {
@@ -29,15 +44,38 @@ void delay_50us(uint16_t us50)
 }
 
 
-//extern void delay_500ms(void);
-//#include "rbuf.h";
-//#include "lcd.h";
-//#include "uart.h";
-//extern uint8_t uart0_ibuf[UART0_IBUF];
-//extern uint8_t uart0_obuf[UART0_IBUF];
-
-void setup(void)
+void Capp::setup(void)
 {
+//	fprintf_P(lcdio, PSTR(ESC_2J"setup %S%S"), PSTR("xxx"), PSTR("yyy"));
+//	fprintf_P(lcdio, PSTR(ESC_2J"mfr=%02x dev=%02x       uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_mfrid, w25x20cl_devid, w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
+	fprintf_P(lcdio, PSTR(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
+
+	uint8_t data[10];
+	for (uint8_t i = 0; i < 10; i++)
+		data[i] = i;
+
+	w25x20cl_enable_wr();
+
+	w25x20cl_page_program(0x000000, data, 10);
+
+	while (w25x20cl_rd_status_reg() & W25_STATUS_BUSY);
+
+	w25x20cl_disable_wr();
+
+	for (uint8_t i = 0; i < 10; i++)
+		data[i] = 0x00;
+
+	w25x20cl_rd_data(0x000000, data, 10);
+	for (uint8_t i = 0; i < 10; i++)
+		fprintf_P(lcdio, PSTR("%02x"), data[i]);
+
+
+
+	while(1);
+	fprintf_P(lcdio, PSTR(ESC_2J"setup"));
+	delay_50us(20000);
+
+	uint32_t time = 0;
 	while (1)
 	{
 //		for (int c = 0; c = 10; c++)
@@ -60,7 +98,6 @@ void setup(void)
 		uint32_t time = time_us1 - time_us;
 
 */
-		uint32_t time;
 
 //		lcd_put('a');
 		//print delay to LCD
@@ -70,7 +107,7 @@ void setup(void)
 		//get start time
 		uint32_t time_us = timer0_us();
 
-		fprintf_P(lcdio, PSTR(ESC_2J"abcdefghijklmnopqrst"ESC_H(0,1)"delay %ld us    "), time);
+//		fprintf_P(lcdio, PSTR(ESC_2J"abcdefghijklmnopqrst"ESC_H(0,1)"delay %ld us    "), time);
 
 		//get end time
 		uint32_t time_us1 = timer0_us();
@@ -83,8 +120,12 @@ void setup(void)
 	}
 }
 
-void loop(void)
+void Capp::loop(void)
 {
+	delay_50us(20000);
 }
 
+
+Cstr::Cstr(const char* PROGMEM pstr)
+{
 }

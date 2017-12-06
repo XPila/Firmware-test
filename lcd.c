@@ -161,6 +161,11 @@ void lcd_ini(void)
 	_wait_counter = 0;
 #endif //LCD_OBUF
 
+#ifdef LCD_PIN_BL
+	DDR(LCD_PIN_BL) |= __MSK(LCD_PIN_BL);
+	PORT(LCD_PIN_BL) |= __MSK(LCD_PIN_BL);
+#endif //LCD_PIN_BL
+
 	_row_addr[0] = 0x00;
 	_row_addr[1] = 0x40;
 	_row_addr[2] = 0x14;
@@ -362,11 +367,11 @@ int lcd_put(uint8_t c)
 #ifdef LCD_OBUF
 #ifdef LCD_ONBL
 	return rbuf_put(lcd_obuf, c);
-#else LCD_ONBL
+#else //LCD_ONBL
 	while (rbuf_put(lcd_obuf, c) < 0);
 	return 0;
-#endif LCD_ONBL
-#else LCD_OBUF
+#endif //LCD_ONBL
+#else //LCD_OBUF
 	lcd_chr(c, 1);
 	return 0;
 #endif //LCD_OBUF

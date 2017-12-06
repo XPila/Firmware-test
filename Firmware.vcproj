@@ -200,6 +200,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\swi2c.c"
+				>
+			</File>
+			<File
+				RelativePath=".\swspi.c"
+				>
+			</File>
+			<File
 				RelativePath=".\test.cpp"
 				>
 			</File>
@@ -209,6 +217,10 @@
 			</File>
 			<File
 				RelativePath=".\uart.c"
+				>
+			</File>
+			<File
+				RelativePath=".\w25x20cl.c"
 				>
 			</File>
 		</Filter>
@@ -236,11 +248,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\swi2c.h"
+				>
+			</File>
+			<File
+				RelativePath=".\swspi.h"
+				>
+			</File>
+			<File
 				RelativePath=".\timer0.h"
 				>
 			</File>
 			<File
 				RelativePath=".\uart.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uni_avr_rpi.h"
+				>
+			</File>
+			<File
+				RelativePath=".\w25x20cl.h"
 				>
 			</File>
 		</Filter>
