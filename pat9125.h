@@ -10,6 +10,12 @@
 //#define PAT9125_ADDR        0x79  //ID=HI
 //#define PAT9125_ADDR        0x73  //ID=NC
 
+
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 extern uint8_t pat9125_PID1;
 extern uint8_t pat9125_PID2;
 
@@ -29,4 +35,7 @@ extern int pat9125_rd_reg(uint8_t addr);
 extern int pat9125_wr_reg(uint8_t addr, uint8_t data);
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_PAT9125_H

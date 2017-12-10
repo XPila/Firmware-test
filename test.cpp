@@ -1,8 +1,5 @@
 //test.cpp
-extern "C"
-{
 #include "main.h"
-}
 
 //class definitions here
 
@@ -48,9 +45,12 @@ void setup(void)
 
 	while(1)
 	{
+		uint32_t time_us1 = timer0_us();
 		pat9125_update();
-		fprintf_P(lcdio, PSTR(ESC_H(0,3)"%5d %5d %3d %3d"), pat9125_x, pat9125_y, pat9125_b, pat9125_s);
-		delay_50us(200);
+		uint32_t time_us2 = timer0_us();
+
+		fprintf_P(lcdio, PSTR(ESC_H(0,3)"%3d %4d %4d %3d %2d"), time_us2 - time_us1, pat9125_x, pat9125_y, pat9125_b, pat9125_s);
+		delay_n40us(100);
 	}
 
 	fprintf_P(lcdio, PSTR(ESC_2J"setup"));

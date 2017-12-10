@@ -6,6 +6,11 @@
 #include "config.h"
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 //initialize pins
 extern void swspi_init(void);
 
@@ -21,4 +26,7 @@ extern uint8_t swspi_txrx(uint8_t tx);
 #endif //(SWSPI_MISO == SWSPI_MOSI)
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //SWSPI_H

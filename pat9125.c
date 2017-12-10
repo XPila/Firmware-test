@@ -2,6 +2,8 @@
 //#ifdef PAT9125
 
 #include "pat9125.h"
+#include "swi2c.h"
+
 
 #define _I2C_TX(addr, data) swi2c_writeByte_A8(PAT9125_ADDR, addr, data)
 #define _I2C_RX(addr) swi2c_readByte_A8(PAT9125_ADDR, addr)

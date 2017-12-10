@@ -6,6 +6,11 @@
 #include "config.h"
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 //initialize pins
 extern void swi2c_init(void);
 
@@ -25,4 +30,7 @@ extern int swi2c_writeByte_A16(uint8_t dev_addr, unsigned short addr, uint8_t b)
 #endif //SWI2C_A16
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //SWI2C_H

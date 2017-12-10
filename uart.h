@@ -9,6 +9,12 @@
 #include <stdio.h>
 #endif
 
+
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 #ifdef UART0
 extern void uart0_ini(void);
 extern int uart0_rx(void);
@@ -30,4 +36,7 @@ extern FILE _uart1io;
 #endif //UART1
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_UART_H

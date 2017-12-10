@@ -11,9 +11,17 @@
 #define rbuf_empty(ptr) (ptr[1] == ptr[2])
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 extern void rbuf_ini(uint8_t* ptr, uint8_t len);
 extern int rbuf_put(uint8_t* ptr, uint8_t val);
 extern int rbuf_get(uint8_t* ptr);
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_RBUF_H

@@ -9,6 +9,7 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include "config.h"
+#include "delay.h"
 #include "io_atmega2560.h"
 #include "timer0.h"
 #include "rbuf.h"
@@ -28,7 +29,15 @@
 #endif //LED_PIN
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 extern void kill(const char fmt, ...);
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_MAIN_H

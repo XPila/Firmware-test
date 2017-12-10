@@ -30,6 +30,11 @@
 #define LCD_FLG_ENTRYSHIFTINC   0x02
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 #ifdef LCD_FILE
 #define lcdio (&_lcdio)
 extern FILE _lcdio;
@@ -55,4 +60,7 @@ extern void lcd_100us(void);
 #define ESC_H(c,r) "\x1b["#r";"#c"H"
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_LCD_H

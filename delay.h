@@ -3,6 +3,11 @@
 #define _DELAY_H
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 #if (F_CPU == 16000000)
 
 //delay functions
@@ -23,4 +28,7 @@ extern void _delay_n40us(void);
 #endif //(F_CPU == 16000000)
 
 
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_DELAY_H

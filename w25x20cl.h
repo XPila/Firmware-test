@@ -13,6 +13,11 @@
 #define W25_STATUS_SRP    0x80
 
 
+#if defined(__cplusplus)
+extern "C" {
+#endif //defined(__cplusplus)
+
+
 extern uint8_t w25x20cl_uid[8];
 
 
@@ -29,5 +34,7 @@ extern void w25x20cl_block64_erase(uint32_t addr);
 extern void w25x20cl_chip_erase(void);
 
 
-
+#if defined(__cplusplus)
+}
+#endif //defined(__cplusplus)
 #endif //_W25X20CL_H
