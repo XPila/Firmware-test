@@ -1,4 +1,5 @@
 //w25x20cl.cpp
+
 #include "w25x20cl.h"
 #include <avr/io.h>
 #include "io_atmega2560.h"
@@ -43,7 +44,7 @@ uint8_t w25x20cl_uid[8]; // 64bit unique id
 
 int w25x20cl_init(void)
 {
-	DDR(W25X20CL_PIN_CS) |= __MSK(W25X20CL_PIN_CS);
+	PIN_OUT(W25X20CL_PIN_CS);
 	_CS_HIGH();
 	for (uint8_t i = 0; i < 8; i++)
 		w25x20cl_uid[i] = 0;
@@ -83,6 +84,62 @@ void w25x20cl_wr_status_reg(uint8_t val)
 	_CS_HIGH();
 }
 
+void w25x20cl_rd_data(uint32_t addr, uint8_t* data, uint8_t cnt)
+{
+	_CS_LOW();
+	_SPI_TX(_CMD_RD_DATA);               // send command 0x03
+	_SPI_TX(((uint8_t*)&addr)[2]);       // send addr bits 16..23
+	_SPI_TX(((uint8_t*)&addr)[1]);       // send addr bits 8..15
+	_SPI_TX(((uint8_t*)&addr)[0]);       // send addr bits 0..7
+	while (cnt--)                        // receive data
+		*(data++) = _SPI_RX();
+	_CS_HIGH();
+}
+
+void w25x20cl_page_program(uint32_t addr, uint8_t* data, uint8_t cnt)
+{
+	_CS_LOW();
+	_SPI_TX(_CMD_PAGE_PROGRAM);          // send command 0x02
+	_SPI_TX(((uint8_t*)&addr)[2]);       // send addr bits 16..23
+	_SPI_TX(((uint8_t*)&addr)[1]);       // send addr bits 8..15
+	_SPI_TX(((uint8_t*)&addr)[0]);       // send addr bits 0..7
+	while (cnt--)                        // send data
+		_SPI_TX(*(data++));
+	_CS_HIGH();
+}
+
+void w25x20cl_erase(uint8_t cmd, uint32_t addr)
+{
+	_CS_LOW();
+	_SPI_TX(_CMD_SECTOR_ERASE);          // send command 0x20
+	_SPI_TX(((uint8_t*)&addr)[2]);       // send addr bits 16..23
+	_SPI_TX(((uint8_t*)&addr)[1]);       // send addr bits 8..15
+	_SPI_TX(((uint8_t*)&addr)[0]);       // send addr bits 0..7
+	_CS_HIGH();
+}
+
+void w25x20cl_sector_erase(uint32_t addr)
+{
+	return w25x20cl_erase(_CMD_SECTOR_ERASE, addr);
+}
+
+void w25x20cl_block32_erase(uint32_t addr)
+{
+	return w25x20cl_erase(_CMD_BLOCK32_ERASE, addr);
+}
+
+void w25x20cl_block64_erase(uint32_t addr)
+{
+	return w25x20cl_erase(_CMD_BLOCK64_ERASE, addr);
+}
+
+void w25x20cl_chip_erase(void)
+{
+	_CS_LOW();
+	_SPI_TX(_CMD_CHIP_ERASE);            // send command 0xc7
+	_CS_HIGH();
+}
+
 int w25x20cl_mfrid_devid(void)
 {
 	_CS_LOW();
@@ -109,26 +166,3 @@ void w25x20cl_rd_uid(void)
 	_CS_HIGH();
 }
 
-void w25x20cl_rd_data(uint32_t addr, uint8_t* data, uint8_t cnt)
-{
-	_CS_LOW();
-	_SPI_TX(_CMD_RD_DATA);               // send command 0x03
-	_SPI_TX(((uint8_t*)&addr)[2]);        // send addr bits 16..23
-	_SPI_TX(((uint8_t*)&addr)[1]);        // send addr bits 8..15
-	_SPI_TX(((uint8_t*)&addr)[0]);        // send addr bits 0..7
-	while (cnt--)                        // receive data
-		*(data++) = _SPI_RX();
-	_CS_HIGH();
-}
-
-void w25x20cl_page_program(uint32_t addr, uint8_t* data, uint8_t cnt)
-{
-	_CS_LOW();
-	_SPI_TX(_CMD_PAGE_PROGRAM);          // send command 0x02
-	_SPI_TX(((uint8_t*)&addr)[2]);        // send addr bits 16..23
-	_SPI_TX(((uint8_t*)&addr)[1]);        // send addr bits 8..15
-	_SPI_TX(((uint8_t*)&addr)[0]);        // send addr bits 0..7
-	while (cnt--)                        // send data
-		_SPI_TX(*(data++));
-	_CS_HIGH();
-}

@@ -1,4 +1,4 @@
-// Software SPI
+//swspi.h - software SPI
 #ifndef SWSPI_H
 #define SWSPI_H
 
@@ -6,14 +6,19 @@
 #include "config.h"
 
 
-//initialize gpio
+//initialize pins
 extern void swspi_init(void);
-//transmit and receive (full duplex mode)
-extern unsigned char swspi_txrx(unsigned char tx);
+
 //transmit (half dublex mode, miso == mosi)
-extern void swspi_tx(unsigned char tx);
+extern void swspi_tx(uint8_t tx);
+
 //receive (half dublex mode, miso == mosi)
-extern unsigned char swspi_rx(void);
+extern uint8_t swspi_rx(void);
+
+#if (SWSPI_MISO != SWSPI_MOSI)
+//transmit and receive (full duplex mode)
+extern uint8_t swspi_txrx(uint8_t tx);
+#endif //(SWSPI_MISO == SWSPI_MOSI)
 
 
 #endif //SWSPI_H

@@ -4,37 +4,12 @@ extern "C"
 #include "main.h"
 }
 
+//class definitions here
 
-//application class
-static class Capp
+
+//setup and loop (called from main.c)
+extern "C"
 {
-public:
-	void setup(void);
-	void loop(void);
-protected:
-	uint8_t m_view;
-} app; //application instance
-
-class Cstr
-{
-public:
-	Cstr(const char* PROGMEM pstr);
-};
-
-extern "C" //setup and loop are called from main.c
-{
-
-void setup(void)
-{
-	app.setup();
-}
-
-void loop(void)
-{
-	app.setup();
-}
-
-}
 
 void delay_50us(uint16_t us50)
 {
@@ -43,24 +18,23 @@ void delay_50us(uint16_t us50)
 		{ asm ("nop"); }
 }
 
-
-void Capp::setup(void)
+void setup(void)
 {
 //	fprintf_P(lcdio, PSTR(ESC_2J"setup %S%S"), PSTR("xxx"), PSTR("yyy"));
 //	fprintf_P(lcdio, PSTR(ESC_2J"mfr=%02x dev=%02x       uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_mfrid, w25x20cl_devid, w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
 	fprintf_P(lcdio, PSTR(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
 
 	uint8_t data[10];
-	for (uint8_t i = 0; i < 10; i++)
-		data[i] = i;
+//	for (uint8_t i = 0; i < 10; i++)
+//		data[i] = i;
 
-	w25x20cl_enable_wr();
+//	w25x20cl_enable_wr();
 
-	w25x20cl_page_program(0x000000, data, 10);
+//	w25x20cl_page_program(0x000000, data, 10);
 
-	while (w25x20cl_rd_status_reg() & W25_STATUS_BUSY);
+//	while (w25x20cl_rd_status_reg() & W25_STATUS_BUSY);
 
-	w25x20cl_disable_wr();
+//	w25x20cl_disable_wr();
 
 	for (uint8_t i = 0; i < 10; i++)
 		data[i] = 0x00;
@@ -70,8 +44,15 @@ void Capp::setup(void)
 		fprintf_P(lcdio, PSTR("%02x"), data[i]);
 
 
+	fprintf_P(lcdio, PSTR(ESC_H(0,1)"%02x %02x"), pat9125_PID1, pat9125_PID2);
 
-	while(1);
+	while(1)
+	{
+		pat9125_update();
+		fprintf_P(lcdio, PSTR(ESC_H(0,3)"%5d %5d %3d %3d"), pat9125_x, pat9125_y, pat9125_b, pat9125_s);
+		delay_50us(200);
+	}
+
 	fprintf_P(lcdio, PSTR(ESC_2J"setup"));
 	delay_50us(20000);
 
@@ -120,12 +101,9 @@ void Capp::setup(void)
 	}
 }
 
-void Capp::loop(void)
+void loop(void)
 {
 	delay_50us(20000);
 }
 
-
-Cstr::Cstr(const char* PROGMEM pstr)
-{
-}
+} //extern "C"

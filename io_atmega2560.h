@@ -1,5 +1,7 @@
+//io_atmega2560.h
 #ifndef _IO_ATMEGA2560
 #define _IO_ATMEGA2560
+
 
 #define __PIN_P0  PINE
 #define __PIN_P1  PINE
@@ -359,5 +361,13 @@
 #define PIN(pin) __PIN(pin)
 #define PORT(pin) __PORT(pin)
 #define DDR(pin) __DDR(pin)
+
+#define PIN_INP(pin) DDR(pin) &= ~__MSK(pin)
+#define PIN_OUT(pin) DDR(pin) |= __MSK(pin)
+#define PIN_CLR(pin) PORT(pin) &= ~__MSK(pin)
+#define PIN_SET(pin) PORT(pin) |= __MSK(pin)
+#define PIN_VAL(pin, val) if (val) PIN_SET(pin); else PIN_CLR(pin);
+#define PIN_GET(pin) (PIN(pin) & __MSK(pin))
+
 
 #endif //_IO_ATMEGA2560

@@ -41,18 +41,43 @@
 #define LCD_PIN_BTN_EN2  14 // phase2
 #define LCD_PIN_BTN_ENC   9 // the click
 
+//SWSPI configuration
+extern void _delay_625ns(void);
+#define SWSPI_DEL	_delay_625ns() //clock delay
+#define SWSPI_POL	0 //clock polarity (0=normal, 1=inverted)
+#define SWSPI_PHA	0 //phase
+#define SWSPI_DOR	0 //data order (0=MSB first, 1=LSB first)
 //SWSPI pin connection
 #define SWSPI_MISO  50
 #define SWSPI_MOSI  51
 #define SWSPI_SCK   52
-#define SWSPI_CFG   0x04
+
+//SWI2C configuration
+extern void _delay_10us(void);
+#define SWI2C_DEL _delay_10us() //clock delay
+#define SWI2C_TMO 2048 //ack timeout in clock cycles
+#define SWI2C_A8       //8bit address fuctions
+//SWI2C pin connection
+#define SWI2C_SDA   20
+#define SWI2C_SCL   21
+
+//PAT9125 configuration
+#define PAT9125_ADDR 0x75
+#define PAT9125_XRES  200
+#define PAT9125_YRES  200
 
 //W25X20CL configuration
 #define W25X20CL_PIN_CS  32
 
-#define X_TMC2130_CS        41
-#define Y_TMC2130_CS        39
-#define Z_TMC2130_CS        67
-#define E_TMC2130_CS        66
+//STEP configuration
+//X-axis
+#define X_PIN_TMC2130_CS        41
+//Y-axis
+#define Y_PIN_TMC2130_CS        39
+//Z-axis
+#define Z_PIN_TMC2130_CS        67
+//E-axis
+#define E_PIN_TMC2130_CS        66
+
 
 #endif //_CONFIG_H

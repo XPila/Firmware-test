@@ -1,8 +1,10 @@
+//main.h
 #ifndef _MAIN_H
 #define _MAIN_H
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
@@ -13,7 +15,9 @@
 #include "uart.h"
 #include "lcd.h"
 #include "swspi.h"
+#include "swi2c.h"
 #include "w25x20cl.h"
+#include "pat9125.h"
 
 
 #ifdef LED_PIN
@@ -22,6 +26,9 @@
 #define led_on() { PORT(LED_PIN) &= ~__MSK(LED_PIN); }
 #define led_neg() { PIN(LED_PIN) |= __MSK(LED_PIN); }
 #endif //LED_PIN
+
+
+extern void kill(const char fmt, ...);
 
 
 #endif //_MAIN_H

@@ -188,11 +188,19 @@
 			Name="Source Files"
 			>
 			<File
+				RelativePath=".\delay.c"
+				>
+			</File>
+			<File
 				RelativePath=".\lcd.c"
 				>
 			</File>
 			<File
 				RelativePath=".\main.c"
+				>
+			</File>
+			<File
+				RelativePath=".\pat9125.c"
 				>
 			</File>
 			<File
@@ -232,6 +240,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\delay.h"
+				>
+			</File>
+			<File
 				RelativePath=".\io_atmega2560.h"
 				>
 			</File>
@@ -241,6 +253,10 @@
 			</File>
 			<File
 				RelativePath=".\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\pat9125.h"
 				>
 			</File>
 			<File
@@ -261,10 +277,6 @@
 			</File>
 			<File
 				RelativePath=".\uart.h"
-				>
-			</File>
-			<File
-				RelativePath=".\uni_avr_rpi.h"
 				>
 			</File>
 			<File

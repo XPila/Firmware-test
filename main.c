@@ -1,4 +1,5 @@
 //main.c
+
 #include "main.h"
 
 
@@ -36,19 +37,24 @@ int main(void)
 	led_on();
 #endif //LED_PIN
 
-	DDR(X_TMC2130_CS) |= __MSK(X_TMC2130_CS);
-	DDR(Y_TMC2130_CS) |= __MSK(Y_TMC2130_CS);
-	DDR(Z_TMC2130_CS) |= __MSK(Z_TMC2130_CS);
-	DDR(E_TMC2130_CS) |= __MSK(E_TMC2130_CS);
-	PORT(X_TMC2130_CS) |= __MSK(X_TMC2130_CS);
-	PORT(Y_TMC2130_CS) |= __MSK(Y_TMC2130_CS);
-	PORT(Z_TMC2130_CS) |= __MSK(Z_TMC2130_CS);
-	PORT(E_TMC2130_CS) |= __MSK(E_TMC2130_CS);
 
+	PIN_OUT(X_PIN_TMC2130_CS);
+	PIN_OUT(Y_PIN_TMC2130_CS);
+	PIN_OUT(Z_PIN_TMC2130_CS);
+	PIN_OUT(E_PIN_TMC2130_CS);
+
+	PIN_SET(X_PIN_TMC2130_CS);
+	PIN_SET(Y_PIN_TMC2130_CS);
+	PIN_SET(Z_PIN_TMC2130_CS);
+	PIN_SET(E_PIN_TMC2130_CS);
 
 	swspi_init();
 
+	swi2c_init();
+
 	w25x20cl_init();
+
+	pat9125_init();
 
 	sei();
 
@@ -57,4 +63,8 @@ int main(void)
 	while (1)
 		loop();
 
+}
+
+void kill(const char fmt, ...)
+{
 }

@@ -1,209 +1,182 @@
-#include "uni_avr_rpi.h"
+//swi2c.c - Software I2C
+//#ifdef SWI2C
 
-#ifdef SWI2C
 #include "swi2c.h"
+#include <avr/io.h>
+#include "io_atmega2560.h"
 
-#ifdef __AVR
-unsigned char swi2c_sda = 20; // SDA pin
-unsigned char swi2c_scl = 21; // SCL pin
-#endif //__AVR
 
-#ifdef __RPI
-unsigned char swi2c_sda = 2; // SDA pin
-unsigned char swi2c_scl = 3; // SCL pin
-#endif //__RPI
-
-unsigned char swi2c_cfg = 0xb1; // config
-//  bit0..3 = clock delay factor = 1 << 1 = 2 [us]
-//  bit4..7 = ack timeout factor = 1 << 11 = 2048 [cycles]
-
-#define SWI2C_SDA    swi2c_sda
-#define SWI2C_SCL    swi2c_scl
 #define SWI2C_RMSK   0x01 //read mask (bit0 = 1)
 #define SWI2C_WMSK   0x00 //write mask (bit0 = 0)
 #define SWI2C_ASHF   0x01 //address shift (<< 1)
 #define SWI2C_DMSK   0x7f //device address mask
 
 
-void swi2c_init(unsigned char sda, unsigned char scl, unsigned char cfg)
+void swi2c_init(void)
 {
-	swi2c_sda = sda;
-	swi2c_scl = scl;
-	swi2c_cfg = cfg;
-	GPIO_OUT(SWI2C_SDA);
-	GPIO_OUT(SWI2C_SCL);
-	GPIO_SET(SWI2C_SDA);
-	GPIO_SET(SWI2C_SCL);
-	DELAY(1000);
+	PIN_OUT(SWI2C_SDA);
+	PIN_OUT(SWI2C_SCL);
+	PIN_SET(SWI2C_SDA);
+	PIN_SET(SWI2C_SCL);
+	SWI2C_DEL;
 }
 
-void swi2c_start(int delay)
+void swi2c_start(void)
 {
-	GPIO_CLR(SWI2C_SDA);
-	DELAY(delay);
-	GPIO_CLR(SWI2C_SCL);
-	DELAY(delay);
+	PIN_CLR(SWI2C_SDA);
+	SWI2C_DEL;
+	PIN_CLR(SWI2C_SCL);
+	SWI2C_DEL;
 }
 
-void swi2c_stop(int delay)
+void swi2c_stop(void)
 {
-	GPIO_SET(SWI2C_SCL);
-	DELAY(delay);
-	GPIO_SET(SWI2C_SDA);
-	DELAY(delay);
+	PIN_SET(SWI2C_SCL);
+	SWI2C_DEL;
+	PIN_SET(SWI2C_SDA);
+	SWI2C_DEL;
 }
 
-void swi2c_ack(int delay)
+void swi2c_ack(void)
 {
-	GPIO_CLR(SWI2C_SDA);
-	DELAY(delay);
-	GPIO_SET(SWI2C_SCL);
-	DELAY(delay);
-	GPIO_CLR(SWI2C_SCL);
-	DELAY(delay);
+	PIN_CLR(SWI2C_SDA);
+	SWI2C_DEL;
+	PIN_SET(SWI2C_SCL);
+	SWI2C_DEL;
+	PIN_CLR(SWI2C_SCL);
+	SWI2C_DEL;
 }
 
-int swi2c_wait_ack(int delay, int ackto)
+uint8_t swi2c_wait_ack(void)
 {
-	GPIO_INP(SWI2C_SDA);
-	DELAY(delay);
-//	GPIO_SET(SWI2C_SDA);
-	DELAY(delay);
-	GPIO_SET(SWI2C_SCL);
-//	DELAY(delay);
-	int ack = 0;
-	while (!(ack = !GPIO_GET(SWI2C_SDA)) && ackto--) DELAY(delay);
-	GPIO_CLR(SWI2C_SCL);
-	DELAY(delay);
-	GPIO_OUT(SWI2C_SDA);
-	DELAY(delay);
-	GPIO_CLR(SWI2C_SDA);
-	DELAY(delay);
+	PIN_INP(SWI2C_SDA);
+	SWI2C_DEL;
+//	PIN_SET(SWI2C_SDA);
+	SWI2C_DEL;
+	PIN_SET(SWI2C_SCL);
+//	SWI2C_DEL;
+	uint16_t timer = SWI2C_TMO;
+	uint8_t ack = 0;
+	while (!(ack = (PIN_GET(SWI2C_SDA)?0:1)) && timer--) SWI2C_DEL;
+	PIN_CLR(SWI2C_SCL);
+	SWI2C_DEL;
+	PIN_OUT(SWI2C_SDA);
+	SWI2C_DEL;
+	PIN_CLR(SWI2C_SDA);
+	SWI2C_DEL;
 	return ack;
 }
 
-unsigned char swi2c_read(int delay)
+uint8_t swi2c_read(void)
 {
-	GPIO_SET(SWI2C_SDA);
-	DELAY(delay);
-	GPIO_INP(SWI2C_SDA);
-	unsigned char data = 0;
-	int bit; for (bit = 7; bit >= 0; bit--)
+	PIN_SET(SWI2C_SDA);
+	SWI2C_DEL;
+	PIN_INP(SWI2C_SDA);
+	uint8_t data = 0;
+	int8_t bit; for (bit = 7; bit >= 0; bit--)
 	{
-		GPIO_SET(SWI2C_SCL);
-		DELAY(delay);
-		data |= GPIO_GET(SWI2C_SDA) << bit;
-		GPIO_CLR(SWI2C_SCL);
-		DELAY(delay);
+		PIN_SET(SWI2C_SCL);
+		SWI2C_DEL;
+		data |= PIN_GET(SWI2C_SDA)?(1 << bit):0;
+		PIN_CLR(SWI2C_SCL);
+		SWI2C_DEL;
 	}
-	GPIO_OUT(SWI2C_SDA);
+	PIN_OUT(SWI2C_SDA);
 	return data;
 }
 
-void swi2c_write(int delay, unsigned char data)
+void swi2c_write(uint8_t data)
 {
-	int bit; for (bit = 7; bit >= 0; bit--)
+	int8_t bit; for (bit = 7; bit >= 0; bit--)
 	{
-		if (data & (1 << bit)) GPIO_SET(SWI2C_SDA);
-		else GPIO_CLR(SWI2C_SDA);
-		DELAY(delay);
-		GPIO_SET(SWI2C_SCL);
-		DELAY(delay);
-		GPIO_CLR(SWI2C_SCL);
-		DELAY(delay);
+		if (data & (1 << bit)) PIN_SET(SWI2C_SDA);
+		else PIN_CLR(SWI2C_SDA);
+		SWI2C_DEL;
+		PIN_SET(SWI2C_SCL);
+		SWI2C_DEL;
+		PIN_CLR(SWI2C_SCL);
+		SWI2C_DEL;
 	}
 }
 
-int swi2c_check(unsigned char dev_addr)
+int swi2c_check(uint8_t dev_addr)
 {
-	int delay = 1 << (swi2c_cfg & 0xf);
-	int tmout = 1 << (swi2c_cfg >> 4);
-	swi2c_start(delay);
-	swi2c_write(delay, (dev_addr & SWI2C_DMSK) << SWI2C_ASHF);
-	if (!swi2c_wait_ack(delay, tmout)) { swi2c_stop(delay); return 0; }
-	swi2c_stop(delay);
-	return 1;
+	swi2c_start();
+	swi2c_write((dev_addr & SWI2C_DMSK) << SWI2C_ASHF);
+	if (!swi2c_wait_ack()) { swi2c_stop(); return -1; }
+	swi2c_stop();
+	return 0;
 }
 
 #ifdef SWI2C_A8 //8bit address
 
-int swi2c_readByte_A8(unsigned char dev_addr, unsigned char addr, unsigned char* pbyte)
+int swi2c_readByte_A8(uint8_t dev_addr, uint8_t addr)
 {
-	int delay = 1 << (swi2c_cfg & 0xf);
-	int tmout = 1 << (swi2c_cfg >> 4);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) { swi2c_stop(delay); return 0; }
-	swi2c_write(delay, addr & 0xff);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_stop(delay);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_RMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	unsigned char byte = swi2c_read(delay);
-	swi2c_stop(delay);
-	if (pbyte) *pbyte = byte;
-	return 1;
+	swi2c_start();
+	swi2c_write(SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) { swi2c_stop(); return -1; }
+	swi2c_write(addr & 0xff);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_stop();
+	swi2c_start();
+	swi2c_write(SWI2C_RMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) return -1;
+	uint8_t b = swi2c_read();
+	swi2c_stop();
+	return b;
 }
 
-int swi2c_writeByte_A8(unsigned char dev_addr, unsigned char addr, unsigned char* pbyte)
+int swi2c_writeByte_A8(uint8_t dev_addr, uint8_t addr, uint8_t b)
 {
-	int delay = 1 << (swi2c_cfg & 0xf);
-	int tmout = 1 << (swi2c_cfg >> 4);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) { swi2c_stop(delay); return 0; }
-	swi2c_write(delay, addr & 0xff);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_write(delay, *pbyte);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_stop(delay);
-	return 1;
+	swi2c_start();
+	swi2c_write(SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) { swi2c_stop(); return -1; }
+	swi2c_write(addr & 0xff);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_write(b);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_stop();
+	return 0;
 }
 
 #endif //SWI2C_A8
 
 #ifdef SWI2C_A16 //16bit address
 
-int swi2c_readByte_A16(unsigned char dev_addr, unsigned short addr, unsigned char* pbyte)
+int swi2c_readByte_A16(uint8_t dev_addr, unsigned short addr)
 {
-	int delay = 1 << (swi2c_cfg & 0xf);
-	int tmout = 1 << (swi2c_cfg >> 4);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) { swi2c_stop(delay); return 0; }
-	swi2c_write(delay, addr >> 8);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_write(delay, addr & 0xff);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_stop(delay);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_RMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	unsigned char byte = swi2c_read(delay);
-	swi2c_stop(delay);
-	if (pbyte) *pbyte = byte;
-	return 1;
+	swi2c_start();
+	swi2c_write(SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) { swi2c_stop(); return -1; }
+	swi2c_write(addr >> 8);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_write(addr & 0xff);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_stop();
+	swi2c_start();
+	swi2c_write(SWI2C_RMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) return -1;
+	uint8_t b = swi2c_read();
+	swi2c_stop();
+	return b;
 }
 
-int swi2c_writeByte_A16(unsigned char dev_addr, unsigned short addr, unsigned char* pbyte)
+int swi2c_writeByte_A16(uint8_t dev_addr, unsigned short addr, uint8_t b)
 {
-	int delay = 1 << (swi2c_cfg & 0xf);
-	int tmout = 1 << (swi2c_cfg >> 4);
-	swi2c_start(delay);
-	swi2c_write(delay, SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
-	if (!swi2c_wait_ack(delay, tmout)) { swi2c_stop(delay); return 0; }
-	swi2c_write(delay, addr >> 8);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_write(delay, addr & 0xff);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_write(delay, *pbyte);
-	if (!swi2c_wait_ack(delay, tmout)) return 0;
-	swi2c_stop(delay);
-	return 1;
+	swi2c_start();
+	swi2c_write(SWI2C_WMSK | ((dev_addr & SWI2C_DMSK) << SWI2C_ASHF));
+	if (!swi2c_wait_ack()) { swi2c_stop(); return -1; }
+	swi2c_write(addr >> 8);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_write(addr & 0xff);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_write(b);
+	if (!swi2c_wait_ack()) return -1;
+	swi2c_stop();
+	return 0;
 }
 
 #endif //SWI2C_A16
 
 
-#endif //SWI2C
+//#endif //SWI2C

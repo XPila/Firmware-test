@@ -1,7 +1,9 @@
 //lcd.c
+
 #include "lcd.h"
 #include <avr/io.h>
 #include "io_atmega2560.h"
+#include "delay.h"
 #include "rbuf.h"
 
 
@@ -31,32 +33,6 @@ int lcd_getchar(FILE *stream)
 #ifdef LCD_ESCC
 	uint8_t _escape[8];
 #endif //LCD_ESCC
-
-//delay macros
-#define delay_125ns() asm("nop\nnop")            //2cycles = 125ns@16MHz
-#define delay_625ns() asm("call _delay_625ns")   //10cycles = 625ns@16MHz
-#define delay_40us() asm("call _delay_40us")     //5+1+158*4-1+5 cycles = 40.125us
-#define delay_n40us(n) asm("ldi r19,%0\ncall _delay_n40us" :: "i" (n))
-//delay functions
-
-void _delay_625ns(void)
-{ }                          // 5cycles call + 5cycles ret = 625ns@16MHz
-
-void _delay_40us(void)
-{                            // 5cycles call
-	asm("ldi r18, 0");       // 1cycle
-	asm("inc r18");          // 1cycle
-	asm("cpi r18, 159");     // 1cycle
-	asm("brne .-6");         // 1/2cycles
-}                            // 5cycles ret
-
-void _delay_n40us(void)
-{                            // 5cycles call
-	asm("call _delay_40us"); // 40us
-	asm("dec r19");          // 1cycle
-	asm("cpi r19, 0");       // 1cycle
-	asm("brne .-10");         // 1/2cycles
-}                            // 5cycles ret
 
 
 //lcd functions
