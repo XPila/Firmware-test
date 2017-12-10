@@ -3,7 +3,7 @@
 #include "lcd.h"
 #include <avr/io.h>
 #include "io_atmega2560.h"
-#include "delay.h"
+#include "swdelay.h"
 #include "rbuf.h"
 
 
@@ -45,17 +45,17 @@ void lcd_write(uint8_t val)
 	if (val & 0x40) PORT(LCD_PIN_D6) |= __MSK(LCD_PIN_D6); else PORT(LCD_PIN_D6) &= ~__MSK(LCD_PIN_D6);
 	if (val & 0x20) PORT(LCD_PIN_D5) |= __MSK(LCD_PIN_D5); else PORT(LCD_PIN_D5) &= ~__MSK(LCD_PIN_D5);
 	if (val & 0x10) PORT(LCD_PIN_D4) |= __MSK(LCD_PIN_D4); else PORT(LCD_PIN_D4) &= ~__MSK(LCD_PIN_D4);
-	delay_125ns();
+	swdelay_125ns();
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns();
+	swdelay_625ns();
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
 	if (val & 0x08) PORT(LCD_PIN_D7) |= __MSK(LCD_PIN_D7); else PORT(LCD_PIN_D7) &= ~__MSK(LCD_PIN_D7);
 	if (val & 0x04) PORT(LCD_PIN_D6) |= __MSK(LCD_PIN_D6); else PORT(LCD_PIN_D6) &= ~__MSK(LCD_PIN_D6);
 	if (val & 0x02) PORT(LCD_PIN_D5) |= __MSK(LCD_PIN_D5); else PORT(LCD_PIN_D5) &= ~__MSK(LCD_PIN_D5);
 	if (val & 0x01) PORT(LCD_PIN_D4) |= __MSK(LCD_PIN_D4); else PORT(LCD_PIN_D4) &= ~__MSK(LCD_PIN_D4);
-	delay_125ns();
+	swdelay_125ns();
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns();
+	swdelay_625ns();
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
 	PORT(LCD_PIN_D7) |= __MSK(LCD_PIN_D7);
 	PORT(LCD_PIN_D6) |= __MSK(LCD_PIN_D6);
@@ -77,41 +77,41 @@ void lcd_ini(void)
 	PORT(LCD_PIN_D6) |= __MSK(LCD_PIN_D6);
 	PORT(LCD_PIN_D5) |= __MSK(LCD_PIN_D5);
 	PORT(LCD_PIN_D4) |= __MSK(LCD_PIN_D4);
-	delay_n40us(200);
-	delay_n40us(175); //15ms (orig 15ms)
+	swdelay_n40us(200);
+	swdelay_n40us(175); //15ms (orig 15ms)
 	PORT(LCD_PIN_D7) &= ~__MSK(LCD_PIN_D7);
 	PORT(LCD_PIN_D6) &= ~__MSK(LCD_PIN_D6);
-	delay_125ns(); //125ns (orig 100ns)
+	swdelay_125ns(); //125ns (orig 100ns)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_n40us(103); //4120us (orig 4100us)
+	swdelay_n40us(103); //4120us (orig 4100us)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_n40us(3); //120us (orig 100us)
+	swdelay_n40us(3); //120us (orig 100us)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_40us(); //40us (orig 40us)
+	swdelay_40us(); //40us (orig 40us)
 	PORT(LCD_PIN_D4) &= ~__MSK(LCD_PIN_D4);
-	delay_125ns(); //125ns (orig 100ns)
+	swdelay_125ns(); //125ns (orig 100ns)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_40us(); //40us (orig 40us)
+	swdelay_40us(); //40us (orig 40us)
 	PORT(LCD_PIN_D4) &= ~__MSK(LCD_PIN_D4);
-	delay_125ns(); //125ns (orig 100ns)
+	swdelay_125ns(); //125ns (orig 100ns)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_D7) |= __MSK(LCD_PIN_D7);
-	delay_125ns(); //125ns (orig 100ns)
+	swdelay_125ns(); //125ns (orig 100ns)
 	PORT(LCD_PIN_EN) |= __MSK(LCD_PIN_EN);
-	delay_625ns(); //625ns (orig 500ns)
+	swdelay_625ns(); //625ns (orig 500ns)
 	PORT(LCD_PIN_EN) &= ~__MSK(LCD_PIN_EN);
-	delay_40us(); //40us (orig 40us)
+	swdelay_40us(); //40us (orig 40us)
 	lcd_cmd(LCD_CMD_DISPLAYCONTROL, 1);
 	lcd_cmd(LCD_CMD_CLEARDISPLAY, 1);
 	lcd_cmd(LCD_CMD_ENTRYMODESET | LCD_FLG_ENTRYSHIFTINC, 1);
@@ -162,9 +162,9 @@ void lcd_cmd(uint8_t cmd, uint8_t wait)
 #endif //LCD_OBUF
 	if (wait == 0) return;
 	if ((cmd & LCD_CMD_CLEARDISPLAY) || (cmd & LCD_CMD_RETURNHOME))
-		delay_n40us(41); //1640us (orig 1640us)
+		swdelay_n40us(41); //1640us (orig 1640us)
 	else
-		delay_40us(); //40us (orig 40us)
+		swdelay_40us(); //40us (orig 40us)
 }
 
 void lcd_erase_screen(uint8_t wait)
@@ -335,7 +335,7 @@ void lcd_chr(uint8_t chr, uint8_t wait)
 	PORT(LCD_PIN_RS) |= __MSK(LCD_PIN_RS);
 	lcd_write(chr);
 	if (wait == 0) return;
-	delay_40us(); //40us (orig 40us)
+	swdelay_40us(); //40us (orig 40us)
 }
 
 int lcd_put(uint8_t c)

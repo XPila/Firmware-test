@@ -9,11 +9,11 @@
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include "config.h"
-#include "delay.h"
 #include "io_atmega2560.h"
 #include "timer0.h"
 #include "rbuf.h"
 #include "uart.h"
+#include "swdelay.h"
 #include "lcd.h"
 #include "swspi.h"
 #include "swi2c.h"

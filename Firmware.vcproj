@@ -188,10 +188,6 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath=".\delay.c"
-				>
-			</File>
-			<File
 				RelativePath=".\lcd.c"
 				>
 			</File>
@@ -205,6 +201,10 @@
 			</File>
 			<File
 				RelativePath=".\rbuf.c"
+				>
+			</File>
+			<File
+				RelativePath=".\swdelay.c"
 				>
 			</File>
 			<File
@@ -240,10 +240,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\delay.h"
-				>
-			</File>
-			<File
 				RelativePath=".\io_atmega2560.h"
 				>
 			</File>
@@ -261,6 +257,10 @@
 			</File>
 			<File
 				RelativePath=".\rbuf.h"
+				>
+			</File>
+			<File
+				RelativePath=".\swdelay.h"
 				>
 			</File>
 			<File

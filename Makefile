@@ -38,7 +38,7 @@ TARGET = firmware
 OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c delay.c timer0.c rbuf.c uart.c lcd.c swspi.c swi2c.c w25x20cl.c pat9125.c
+SRC = main.c timer0.c rbuf.c uart.c swdelay.c lcd.c swspi.c swi2c.c w25x20cl.c pat9125.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = test.cpp

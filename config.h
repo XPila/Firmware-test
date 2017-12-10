@@ -42,7 +42,7 @@
 #define LCD_PIN_BTN_ENC   9 // the click
 
 //SWSPI configuration
-#define SWSPI_DEL	_delay_625ns() //clock delay
+#define SWSPI_DEL	_swdelay_625ns() //clock delay
 #define SWSPI_POL	0 //clock polarity (0=normal, 1=inverted)
 #define SWSPI_PHA	0 //phase
 #define SWSPI_DOR	0 //data order (0=MSB first, 1=LSB first)
@@ -52,7 +52,7 @@
 #define SWSPI_SCK   52
 
 //SWI2C configuration
-#define SWI2C_DEL _delay_625ns() //clock delay
+#define SWI2C_DEL _swdelay_625ns() //clock delay
 //#define SWI2C_DEL _delay_10us() //clock delay
 #define SWI2C_TMO 2048 //ack timeout in clock cycles
 #define SWI2C_A8       //8bit address fuctions
@@ -84,8 +84,8 @@
 extern "C" {
 #endif //defined(__cplusplus)
 
-extern void _delay_625ns(void);
-extern void _delay_10us(void);
+extern void _swdelay_625ns(void);
+extern void _swdelay_10us(void);
 
 #if defined(__cplusplus)
 }
