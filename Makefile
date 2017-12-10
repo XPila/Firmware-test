@@ -27,6 +27,7 @@ F_CPU = 16000000
 # 0x00000*2=0x00000 for ATmega2560 application
 # 0x1f000*2=0x3E000 for ATmega2560 bootloader
 BASE_ADDRESS = 00000
+X_ADDRESS = 10000
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
@@ -38,7 +39,7 @@ TARGET = firmware
 OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c timer0.c rbuf.c uart.c swdelay.c lcd.c swspi.c swi2c.c w25x20cl.c pat9125.c
+SRC = main.c timer0.c rbuf.c uart.c swdelay.c lcd.c swspi.c swi2c.c w25x20cl.c pat9125.c localize.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = test.cpp
@@ -173,6 +174,7 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 #LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS) -nostartfiles -nodefaultlibs
 #LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS) -nostartfiles
 LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS)
+LDFLAGS += -Wl,--section-start=.test=$(X_ADDRESS)
 
 
 

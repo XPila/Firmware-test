@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\localize.c"
+				>
+			</File>
+			<File
 				RelativePath=".\main.c"
 				>
 			</File>
@@ -245,6 +249,10 @@
 			</File>
 			<File
 				RelativePath=".\lcd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\localize.h"
 				>
 			</File>
 			<File

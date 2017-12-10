@@ -320,7 +320,7 @@ void lcd_esc(uint8_t chr, uint8_t wait)
 		break;
 	}
 	escape_cnt = 0; // reset escape
-end:
+//end:
 	return; // assume sucess
 }
 #endif //LCD_ESCC

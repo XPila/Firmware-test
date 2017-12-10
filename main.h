@@ -19,6 +19,7 @@
 #include "swi2c.h"
 #include "w25x20cl.h"
 #include "pat9125.h"
+#include "localize.h"
 
 
 #ifdef LED_PIN
@@ -31,6 +32,10 @@
 
 #if defined(__cplusplus)
 extern "C" {
+
+#undef PSTR
+#define PSTR(s) (__extension__({static const char __c[] __attribute__((section(".progmem.data"))) = s; &__c[0];}))
+
 #endif //defined(__cplusplus)
 
 

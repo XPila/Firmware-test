@@ -14,12 +14,23 @@ void delay_50us(uint16_t us50)
 		for (uint8_t i = 0; i < 200; i++)
 		{ asm ("nop"); }
 }
+//#define PROG_MEM __attribute__(section(".progmem")) 
+//#define _n(str) ((progmem const char*)str)
+//#define _n(s) (__extension__({static char __c[] PROGMEM = (s); &__c[0];}))
+//#define _n(s) (__extension__({static prog_char __c[] = (s); &__c[0];})) 
+
+
+//#define _n(s) PSTR(s)
 
 void setup(void)
 {
 //	fprintf_P(lcdio, PSTR(ESC_2J"setup %S%S"), PSTR("xxx"), PSTR("yyy"));
 //	fprintf_P(lcdio, PSTR(ESC_2J"mfr=%02x dev=%02x       uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_mfrid, w25x20cl_devid, w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
 	fprintf_P(lcdio, PSTR(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
+//	fprintf_P(lcdio, _n(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x                   "), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
+//	fputs_P(_n(ESC_2J), lcdio);
+//	fputs_P(_i("hello world!"), lcdio);
+//	fputs_P(_i("fuck you!"), lcdio);
 
 	uint8_t data[10];
 //	for (uint8_t i = 0; i < 10; i++)
@@ -53,15 +64,15 @@ void setup(void)
 		swdelay_n40us(100);
 	}
 
-	fprintf_P(lcdio, PSTR(ESC_2J"setup"));
-	delay_50us(20000);
+///	fprintf_P(lcdio, PSTR(ESC_2J"setup"));
+//	delay_50us(20000);
 
-	uint32_t time = 0;
+//	uint32_t time = 0;
 	while (1)
 	{
 //		for (int c = 0; c = 10; c++)
-			delay_50us(5000); //
-		led_neg();
+//			delay_50us(5000); //
+//		led_neg();
 /*
 
 		//get start time
@@ -86,13 +97,13 @@ void setup(void)
 		//delay_50us(50);
 
 		//get start time
-		uint32_t time_us = timer0_us();
+//		uint32_t time_us = timer0_us();
 
 //		fprintf_P(lcdio, PSTR(ESC_2J"abcdefghijklmnopqrst"ESC_H(0,1)"delay %ld us    "), time);
 
 		//get end time
-		uint32_t time_us1 = timer0_us();
-		time = time_us1 - time_us;
+//		uint32_t time_us1 = timer0_us();
+//		time = time_us1 - time_us;
 
 //		lcd_cmd(LCD_CMD_SETDDRAMADDR+20);
 		//fprintf_P(lcdio, PSTR("kbd %d"), kbd);
