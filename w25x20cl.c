@@ -1,4 +1,4 @@
-//w25x20cl.cpp
+//w25x20cl.c
 
 #include "w25x20cl.h"
 #include <avr/io.h>

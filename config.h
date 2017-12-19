@@ -41,6 +41,12 @@
 #define LCD_PIN_BTN_EN2  14 // phase2
 #define LCD_PIN_BTN_ENC   9 // the click
 
+//ADC configuration
+#define ADC_CHAN_MSK      0b0000001000011111 //used AD channels bit mask (0,1,2,3,4,9)
+#define ADC_CHAN_CNT      6         //number of used channels)
+#define ADC_OVRSAMPL      16        //oversampling multiplier
+#define ADC_CALLBACK      adc_ready //callback function ()
+
 //SWSPI configuration
 #define SWSPI_DEL	_swdelay_625ns() //clock delay
 #define SWSPI_POL	0 //clock polarity (0=normal, 1=inverted)
@@ -68,6 +74,10 @@
 //W25X20CL configuration
 #define W25X20CL_PIN_CS  32
 
+//SD card configuration
+#define SD_PIN_CS        77
+#define SD_PIN_DETECT    15
+
 //STEP configuration
 //X-axis
 #define X_PIN_TMC2130_CS        41
@@ -77,6 +87,7 @@
 #define Z_PIN_TMC2130_CS        67
 //E-axis
 #define E_PIN_TMC2130_CS        66
+
 
 
 

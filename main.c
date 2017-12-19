@@ -17,6 +17,9 @@ void main_1ms(void)
 
 int main(void)
 {
+//	register sd_response_t rsp = {0,0,0,0,0,0,0,0};
+//	rsp = sd_cmd_00(0);
+//	if (rsp.crc_error) return 0;
 	cli();
 
 	timer0_ini();

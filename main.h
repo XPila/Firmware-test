@@ -15,10 +15,12 @@
 #include "uart.h"
 #include "swdelay.h"
 #include "lcd.h"
+#include "adc.h"
 #include "swspi.h"
 #include "swi2c.h"
 #include "w25x20cl.h"
 #include "pat9125.h"
+#include "sd_spi.h"
 #include "localize.h"
 
 

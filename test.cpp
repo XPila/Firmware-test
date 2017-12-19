@@ -20,19 +20,64 @@ void delay_50us(uint16_t us50)
 //#define _n(s) (__extension__({static prog_char __c[] = (s); &__c[0];})) 
 
 
+
+
+
 //#define _n(s) PSTR(s)
+
+
+
+
+
+
+void adc_ready(void)
+{
+	for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
+	{
+		if ((i & 3) == 0)
+			fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (i >> 2));
+		fprintf_P(lcdio, PSTR("%4d "), adc_values[i] >> 4);
+	}
+}
 
 void setup(void)
 {
+	adc_init();
+/*
+	for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
+	{
+		if ((i & 3) == 0)
+			fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (i >> 2));
+		fprintf_P(lcdio, PSTR("%4d "), adc_chan(i));
+	}
+	while (1);*/
+
+//	uint8_t ch = 0;
+	while (1)
+	{
+//		adc_setmux(ch);
+//		ADCSRA |= (1 << ADSC); //start conversion
+		adc_cycle();
+
+		swdelay_n40us(25);
+//		swdelay_n40us(100);
+//		if ((ch & 3) == 0)
+//			fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (ch >> 2));
+//		fprintf_P(lcdio, PSTR("%4d "), ADC);
+
+//		ch++;
+//		ch &= 0x0f;
+	}
+
 //	fprintf_P(lcdio, PSTR(ESC_2J"setup %S%S"), PSTR("xxx"), PSTR("yyy"));
 //	fprintf_P(lcdio, PSTR(ESC_2J"mfr=%02x dev=%02x       uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_mfrid, w25x20cl_devid, w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
-	fprintf_P(lcdio, PSTR(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
+//	fprintf_P(lcdio, PSTR(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x"), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
 //	fprintf_P(lcdio, _n(ESC_2J"uid=%02x%02x%02x%02x%02x%02x%02x%02x                   "), w25x20cl_uid[0], w25x20cl_uid[1], w25x20cl_uid[2], w25x20cl_uid[3], w25x20cl_uid[4], w25x20cl_uid[5], w25x20cl_uid[6], w25x20cl_uid[7]);
 //	fputs_P(_n(ESC_2J), lcdio);
 //	fputs_P(_i("hello world!"), lcdio);
 //	fputs_P(_i("fuck you!"), lcdio);
 
-	uint8_t data[10];
+//	uint8_t data[10];
 //	for (uint8_t i = 0; i < 10; i++)
 //		data[i] = i;
 
@@ -44,7 +89,7 @@ void setup(void)
 
 //	w25x20cl_disable_wr();
 
-	for (uint8_t i = 0; i < 10; i++)
+/*	for (uint8_t i = 0; i < 10; i++)
 		data[i] = 0x00;
 
 	w25x20cl_rd_data(0x000000, data, 10);
@@ -63,7 +108,7 @@ void setup(void)
 		fprintf_P(lcdio, PSTR(ESC_H(0,3)"%3d %4d %4d %3d %2d"), time_us2 - time_us1, pat9125_x, pat9125_y, pat9125_b, pat9125_s);
 		swdelay_n40us(100);
 	}
-
+*/
 ///	fprintf_P(lcdio, PSTR(ESC_2J"setup"));
 //	delay_50us(20000);
 

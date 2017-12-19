@@ -188,6 +188,10 @@
 			Name="Source Files"
 			>
 			<File
+				RelativePath=".\adc.c"
+				>
+			</File>
+			<File
 				RelativePath=".\lcd.c"
 				>
 			</File>
@@ -205,6 +209,10 @@
 			</File>
 			<File
 				RelativePath=".\rbuf.c"
+				>
+			</File>
+			<File
+				RelativePath=".\sd_spi.c"
 				>
 			</File>
 			<File
@@ -240,6 +248,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath=".\adc.h"
+				>
+			</File>
+			<File
 				RelativePath=".\config.h"
 				>
 			</File>
@@ -265,6 +277,10 @@
 			</File>
 			<File
 				RelativePath=".\rbuf.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sd_spi.h"
 				>
 			</File>
 			<File
