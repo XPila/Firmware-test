@@ -7,6 +7,7 @@
 uint8_t adc_state;
 uint8_t adc_count;
 uint16_t adc_values[ADC_CHAN_CNT];
+uint16_t adc_sim_mask;
 
 
 #ifdef ADC_CALLBACK
@@ -16,9 +17,14 @@ uint16_t adc_values[ADC_CHAN_CNT];
 
 void adc_init(void)
 {
+	printf(("adc_init\n"));
+	adc_sim_mask = 0x00;
 	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 	ADMUX |= (1 << REFS0);
 	ADCSRA |= (1 << ADEN);
+//	ADCSRA |= (1 << ADIF) | (1 << ADSC);
+	DIDR0 = (ADC_CHAN_MSK & 0xff);
+	DIDR2 = (ADC_CHAN_MSK >> 8);
 	adc_reset();
 }
 
@@ -26,7 +32,8 @@ void adc_reset(void)
 {
 	adc_state = 0;
 	adc_count = 0;
-	for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
+	uint8_t i; for (i = 0; i < ADC_CHAN_CNT; i++)
+	if ((adc_sim_mask & (1 << i)) == 0)
 		adc_values[i] = 0;
 }
 
@@ -56,8 +63,9 @@ void adc_cycle(void)
 	if (adc_state & 0x80)
 	{
 		uint8_t index = adc_state & 0x0f;
-		adc_values[index++] += ADC;
-		if (index >= ADC_CHAN_CNT)
+		if ((adc_sim_mask & (1 << index)) == 0)
+			adc_values[index] += ADC;
+		if (index++ >= ADC_CHAN_CNT)
 		{
 			index = 0;
 			adc_count++;

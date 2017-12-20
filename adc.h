@@ -14,6 +14,7 @@ extern "C" {
 extern uint8_t adc_state;
 extern uint8_t adc_count;
 extern uint16_t adc_values[ADC_CHAN_CNT];
+extern uint16_t adc_sim_mask;
 
 
 extern void adc_init(void);
