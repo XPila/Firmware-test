@@ -25,24 +25,71 @@ void delay_50us(uint16_t us50)
 
 //#define _n(s) PSTR(s)
 
+#define SWPWM_CHAN_CNT    1
+#define SWPWM_CHN0_PIN   13
+#define SWPWM_MAXVALUE   127
 
+//chnnel 0
+#if (SWPWM_CHAN_CNT > 0)
+#define SWPWM_CHN0_OUT   PIN_OUT(SWPWM_CHN0_PIN)
+#define SWPWM_CHN0_SET   if (swpwm_values[0]) PIN_SET(SWPWM_CHN0_PIN)
+#define SWPWM_CHN0_CLR   if (swpwm_values[0] == swpwm_counter) PIN_CLR(SWPWM_CHN0_PIN)
+#else //(SWPWM_CHAN_CNT > 0)
+#define SWPWM_CHN0_OUT
+#define SWPWM_CHN0_SET
+#define SWPWM_CHN0_CLR
+#endif //(SWPWM_CHAN_CNT > 0)
 
+//chnnel 1
+#if (SWPWM_CHAN_CNT > 1)
+#define SWPWM_CHN1_OUT   PIN_OUT(SWPWM_CHN1_PIN)
+#define SWPWM_CHN1_SET   if (swpwm_values[1]) PIN_SET(SWPWM_CHN1_PIN)
+#define SWPWM_CHN1_CLR   if (swpwm_values[1] == swpwm_counter) PIN_CLR(SWPWM_CHN1_PIN)
+#else //(SWPWM_CHAN_CNT > 0)
+#define SWPWM_CHN1_OUT
+#define SWPWM_CHN1_SET
+#define SWPWM_CHN1_CLR
+#endif //(SWPWM_CHAN_CNT > 0)
 
+uint8_t swpwm_values[SWPWM_CHAN_CNT];
+uint8_t swpwm_counter;
 
+void swpwm_init(void)
+{
+	SWPWM_CHN0_OUT;
+	SWPWM_CHN1_OUT;
+	uint8_t i; for (i = 0; i < SWPWM_CHAN_CNT; i++)
+		swpwm_values[i] = 0;
+	swpwm_counter = SWPWM_MAXVALUE;
+}
+
+void swpwm_cycle(void)
+{
+	if (swpwm_counter >= SWPWM_MAXVALUE)
+	{
+		swpwm_counter = 0;
+		SWPWM_CHN0_SET;
+		SWPWM_CHN1_SET;
+	}
+	else
+	{
+		SWPWM_CHN0_CLR;
+		SWPWM_CHN1_CLR;
+	}
+	swpwm_counter++;
+}
+
+uint16_t vals[ADC_CHAN_CNT];
+uint8_t led_intensity;
 
 void adc_ready(void)
 {
 	for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
-	{
-		if ((i & 3) == 0)
-			fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (i >> 2));
-		fprintf_P(lcdio, PSTR("%4d "), adc_values[i] >> 4);
-	}
+		vals[i] = adc_values[i];
 }
 
 void setup(void)
 {
-	adc_init();
 /*
 	for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
 	{
@@ -55,11 +102,23 @@ void setup(void)
 //	uint8_t ch = 0;
 	while (1)
 	{
+		for (uint8_t i = 0; i < ADC_CHAN_CNT; i++)
+		{
+			if ((i & 3) == 0)
+				fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (i >> 2));
+			fprintf_P(lcdio, PSTR("%4d "), vals[i] >> 4);
+		}
+	led_intensity++;
+	if (led_intensity < 128)
+		swpwm_values[0] = led_intensity;
+	else
+		swpwm_values[0] = 255 - led_intensity;
+
 //		adc_setmux(ch);
 //		ADCSRA |= (1 << ADSC); //start conversion
-		adc_cycle();
-
-		swdelay_n40us(25);
+//		adc_cycle();
+//		swpwm_cycle();
+//		swdelay_n40us(25);
 //		swdelay_n40us(100);
 //		if ((ch & 3) == 0)
 //			fprintf_P(lcdio, PSTR(ESC_H(0,%d)), (ch >> 2));

@@ -5,13 +5,18 @@
 
 extern void setup(void);
 extern void loop(void);
+extern void swpwm_init(void);
+extern void swpwm_cycle(void);
 
 void main_100us(void)
 {
+	lcd_100us();
+	swpwm_cycle();
 }
 
 void main_1ms(void)
 {
+	adc_cycle();
 }
 
 
@@ -41,6 +46,9 @@ int main(void)
 	led_on();
 #endif //LED_PIN
 
+	adc_init();
+
+	swpwm_init();
 
 	PIN_OUT(X_PIN_TMC2130_CS);
 	PIN_OUT(Y_PIN_TMC2130_CS);

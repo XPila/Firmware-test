@@ -7,8 +7,9 @@
 //TIMER0 configuration
 #define TIMER0_PRESCALER   (1 << CS00) | (1 << CS01) // f/64
 #define TIMER0_CYC_100US   25                        // 25cyces = 100us
-#define TIMER0_CB_100US    lcd_100us                 // lcd callback
-#define TIMER0_CB_1MS      main_1ms
+//#define TIMER0_CB_100US    lcd_100us                 // lcd callback
+#define TIMER0_CB_100US    main_100us                //
+#define TIMER0_CB_1MS      main_1ms                  //
 
 //UART0 configuration
 #define UART0               // enable uart0
