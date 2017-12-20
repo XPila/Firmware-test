@@ -42,7 +42,7 @@ void w25x20cl_rd_uid(void);
 uint8_t w25x20cl_uid[8]; // 64bit unique id
 
 
-int w25x20cl_init(void)
+int w25x20cl_ini(void)
 {
 	PIN_OUT(W25X20CL_PIN_CS);
 	_CS_HIGH();

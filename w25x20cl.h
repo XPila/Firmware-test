@@ -21,7 +21,7 @@ extern "C" {
 extern uint8_t w25x20cl_uid[8];
 
 
-extern int w25x20cl_init(void);
+extern int w25x20cl_ini(void);
 extern void w25x20cl_enable_wr(void);
 extern void w25x20cl_disable_wr(void);
 extern uint8_t w25x20cl_rd_status_reg(void);

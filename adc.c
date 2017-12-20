@@ -4,10 +4,10 @@
 #include <avr/io.h>
 
 
-uint8_t adc_state;
-uint8_t adc_count;
-uint16_t adc_values[ADC_CHAN_CNT];
-uint16_t adc_sim_mask;
+uint8_t adc_sta;
+uint8_t adc_cnt;
+uint16_t adc_val[ADC_CHAN_CNT];
+uint16_t adc_sim_msk;
 
 
 #ifdef ADC_CALLBACK
@@ -15,29 +15,28 @@ uint16_t adc_sim_mask;
 #endif //ADC_CALLBACK
 
 
-void adc_init(void)
+void adc_ini(void)
 {
-	printf(("adc_init\n"));
-	adc_sim_mask = 0x00;
+	adc_sim_msk = 0x00;
 	ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 	ADMUX |= (1 << REFS0);
 	ADCSRA |= (1 << ADEN);
 //	ADCSRA |= (1 << ADIF) | (1 << ADSC);
 	DIDR0 = (ADC_CHAN_MSK & 0xff);
 	DIDR2 = (ADC_CHAN_MSK >> 8);
-	adc_reset();
+	adc_res();
 }
 
-void adc_reset(void)
+void adc_res(void)
 {
-	adc_state = 0;
-	adc_count = 0;
+	adc_sta = 0;
+	adc_cnt = 0;
 	uint8_t i; for (i = 0; i < ADC_CHAN_CNT; i++)
-	if ((adc_sim_mask & (1 << i)) == 0)
-		adc_values[i] = 0;
+	if ((adc_sim_msk & (1 << i)) == 0)
+		adc_val[i] = 0;
 }
 
-void adc_setmux(uint8_t ch)
+void adc_mux(uint8_t ch)
 {
 	ch &= 0x0f;
 	if (ch & 0x08) ADCSRB |= (1 << MUX5);
@@ -58,31 +57,31 @@ uint8_t adc_chan(uint8_t index)
 	return chan;
 }
 
-void adc_cycle(void)
+void adc_cyc(void)
 {
-	if (adc_state & 0x80)
+	if (adc_sta & 0x80)
 	{
-		uint8_t index = adc_state & 0x0f;
-		if ((adc_sim_mask & (1 << index)) == 0)
-			adc_values[index] += ADC;
+		uint8_t index = adc_sta & 0x0f;
+		if ((adc_sim_msk & (1 << index)) == 0)
+			adc_val[index] += ADC;
 		if (index++ >= ADC_CHAN_CNT)
 		{
 			index = 0;
-			adc_count++;
-			if (adc_count >= ADC_OVRSAMPL)
+			adc_cnt++;
+			if (adc_cnt >= ADC_OVRSAMPL)
 			{
 #ifdef ADC_CALLBACK
 				ADC_CALLBACK();
 #endif //ADC_CALLBACK
-				adc_reset();
+				adc_res();
 			}
 		}
-		adc_setmux(adc_chan(index));
-		adc_state = index;
+		adc_mux(adc_chan(index));
+		adc_sta = index;
 	}
 	else
 	{
 		ADCSRA |= (1 << ADSC); //start conversion
-		adc_state |= 0x80;
+		adc_sta |= 0x80;
 	}
 }

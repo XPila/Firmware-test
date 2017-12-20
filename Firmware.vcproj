@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\swpwm.c"
+				>
+			</File>
+			<File
 				RelativePath=".\swspi.c"
 				>
 			</File>
@@ -289,6 +293,10 @@
 			</File>
 			<File
 				RelativePath=".\swi2c.h"
+				>
+			</File>
+			<File
+				RelativePath=".\swpwm.h"
 				>
 			</File>
 			<File

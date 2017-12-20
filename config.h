@@ -49,6 +49,15 @@
 #define ADC_OVRSAMPL      16        //oversampling multiplier
 #define ADC_CALLBACK      adc_ready //callback function ()
 
+//SWPWM configuration
+#define SWPWM_CHAN_CNT    3 //three channels
+#define SWPWM_CHN0_PIN   13 //boot led
+#define SWPWM_CHN1_PIN    6 //fan0 pin
+#define SWPWM_CHN2_PIN    8 //fan1 pin
+#define SWPWM_CHN0_MAX  127
+#define SWPWM_CHN1_MAX  127
+#define SWPWM_CHN2_MAX  127
+
 //SWSPI configuration
 #define SWSPI_DEL	_swdelay_625ns() //clock delay
 #define SWSPI_POL	0 //clock polarity (0=normal, 1=inverted)

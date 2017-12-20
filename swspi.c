@@ -15,7 +15,7 @@
 #endif
 
 
-void swspi_init()
+void swspi_ini()
 {
 	PIN_INP(SWSPI_MISO);
 	PIN_OUT(SWSPI_MOSI);

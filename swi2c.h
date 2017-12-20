@@ -12,7 +12,7 @@ extern "C" {
 
 
 //initialize pins
-extern void swi2c_init(void);
+extern void swi2c_ini(void);
 
 //check device address acknowledge
 extern int swi2c_check(uint8_t dev_addr);

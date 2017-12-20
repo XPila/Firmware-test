@@ -12,7 +12,7 @@ extern "C" {
 
 
 //initialize pins
-extern void swspi_init(void);
+extern void swspi_ini(void);
 
 //transmit (half dublex mode, miso == mosi)
 extern void swspi_tx(uint8_t tx);

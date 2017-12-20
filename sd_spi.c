@@ -14,7 +14,7 @@ void _send_request(uint8_t cmd, uint32_t arg);
 sd_response_t _recieve_response(void);
 
 
-int8_t sd_init(void)
+int8_t sd_ini(void)
 {
 	return 0;
 }

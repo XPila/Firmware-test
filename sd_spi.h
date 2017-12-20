@@ -60,7 +60,7 @@ typedef struct //1byte
 //#pragma pack(pop)
 
 
-extern int8_t sd_init(void);
+extern int8_t sd_ini(void);
 
 extern int16_t sd_read_block(uint32_t addr, uint8_t* data, uint16_t size);
 

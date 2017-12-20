@@ -12,7 +12,7 @@
 #define SWI2C_DMSK   0x7f //device address mask
 
 
-void swi2c_init(void)
+void swi2c_ini(void)
 {
 	PIN_OUT(SWI2C_SDA);
 	PIN_OUT(SWI2C_SCL);

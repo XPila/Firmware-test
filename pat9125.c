@@ -37,7 +37,7 @@ uint8_t pat9125_b = 0;
 uint8_t pat9125_s = 0;
 
 
-int pat9125_init(void)
+int pat9125_ini(void)
 {
 	pat9125_xres = PAT9125_XRES;
 	pat9125_yres = PAT9125_YRES;

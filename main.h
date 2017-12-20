@@ -16,6 +16,7 @@
 #include "swdelay.h"
 #include "lcd.h"
 #include "adc.h"
+#include "swpwm.h"
 #include "swspi.h"
 #include "swi2c.h"
 #include "w25x20cl.h"
