@@ -21,8 +21,9 @@
 #include "swi2c.h"
 #include "w25x20cl.h"
 #include "pat9125.h"
+#include "tmc2130.h"
 #include "sd_spi.h"
-#include "localize.h"
+//#include "localize.h"
 
 
 #ifdef LED_PIN

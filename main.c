@@ -7,6 +7,7 @@ extern void setup(void);
 extern void loop(void);
 
 
+
 void main_100us(void)
 {
 	lcd_100us();
@@ -49,7 +50,7 @@ int main(void)
 
 	swpwm_ini();
 
-	PIN_OUT(X_PIN_TMC2130_CS);
+/*	PIN_OUT(X_PIN_TMC2130_CS);
 	PIN_OUT(Y_PIN_TMC2130_CS);
 	PIN_OUT(Z_PIN_TMC2130_CS);
 	PIN_OUT(E_PIN_TMC2130_CS);
@@ -57,7 +58,7 @@ int main(void)
 	PIN_SET(X_PIN_TMC2130_CS);
 	PIN_SET(Y_PIN_TMC2130_CS);
 	PIN_SET(Z_PIN_TMC2130_CS);
-	PIN_SET(E_PIN_TMC2130_CS);
+	PIN_SET(E_PIN_TMC2130_CS);*/
 
 	swspi_ini();
 
@@ -66,6 +67,8 @@ int main(void)
 	w25x20cl_ini();
 
 	pat9125_ini();
+
+	tmc2130_ini();
 
 	sei();
 
@@ -76,6 +79,11 @@ int main(void)
 
 }
 
+//static const char __attribute__((section(".test"))) ___c2[] = "MAGOR";
+
 void kill(const char fmt, ...)
 {
+//	puts(___c2);
 }
+
+

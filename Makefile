@@ -27,7 +27,11 @@ F_CPU = 16000000
 # 0x00000*2=0x00000 for ATmega2560 application
 # 0x1f000*2=0x3E000 for ATmega2560 bootloader
 BASE_ADDRESS = 00000
-X_ADDRESS = 10000
+LOC_DATA_ADDRESS = 04000
+#X_ADDRESS = 5000
+#TXT_I2_H_ADDRESS = 5000
+#TXT_I2_D_ADDRESS = 5010
+#X_ADDRESS1 = 3d78
 
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
@@ -39,7 +43,7 @@ TARGET = firmware
 OBJDIR = .
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = main.c timer0.c rbuf.c uart.c swdelay.c lcd.c adc.c swpwm.c swspi.c swi2c.c w25x20cl.c pat9125.c sd_spi.c localize.c
+SRC = main.c timer0.c rbuf.c uart.c swdelay.c lcd.c adc.c swpwm.c swspi.c swi2c.c w25x20cl.c pat9125.c tmc2130.c sd_spi.c rnd.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = test.cpp
@@ -174,7 +178,11 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 #LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS) -nostartfiles -nodefaultlibs
 #LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS) -nostartfiles
 LDFLAGS += -Wl,--section-start=.text=$(BASE_ADDRESS)
-LDFLAGS += -Wl,--section-start=.test=$(X_ADDRESS)
+LDFLAGS += -Wl,--section-start=loc_data=$(LOC_DATA_ADDRESS)
+#LDFLAGS += -Wl,--section-start=.txt_i2_head=$(TXT_I2_H_ADDRESS)
+#LDFLAGS += -Wl,--section-start=.txt_i2_data=$(TXT_I2_D_ADDRESS)
+#LDFLAGS += -Wl,--section-start=.txt_n=$(X_ADDRESS)
+#LDFLAGS += -Wl,--section-start=.txt_n.1=$(X_ADDRESS1)
 
 
 

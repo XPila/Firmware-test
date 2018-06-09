@@ -212,7 +212,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rnd.c"
+				>
+			</File>
+			<File
 				RelativePath=".\sd_spi.c"
+				>
+			</File>
+			<File
+				RelativePath=".\stp4.c"
 				>
 			</File>
 			<File
@@ -237,6 +245,10 @@
 			</File>
 			<File
 				RelativePath=".\timer0.c"
+				>
+			</File>
+			<File
+				RelativePath=".\tmc2130.c"
 				>
 			</File>
 			<File
@@ -284,7 +296,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rnd.h"
+				>
+			</File>
+			<File
 				RelativePath=".\sd_spi.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stp4.h"
 				>
 			</File>
 			<File
@@ -308,6 +328,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\tmc2130.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uart.h"
 				>
 			</File>
@@ -324,6 +348,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\Firmware.txt"
+			>
+		</File>
 		<File
 			RelativePath=".\Makefile"
 			>

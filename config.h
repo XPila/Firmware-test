@@ -89,15 +89,11 @@
 #define SD_PIN_CS        77
 #define SD_PIN_DETECT    15
 
-//STEP configuration
-//X-axis
-#define X_PIN_TMC2130_CS        41
-//Y-axis
-#define Y_PIN_TMC2130_CS        39
-//Z-axis
-#define Z_PIN_TMC2130_CS        67
-//E-axis
-#define E_PIN_TMC2130_CS        66
+//TMC2130 configuration
+#define TMC2130_PIN_CS_X        41
+#define TMC2130_PIN_CS_Y        39
+#define TMC2130_PIN_CS_Z        67
+#define TMC2130_PIN_CS_E        66
 
 
 

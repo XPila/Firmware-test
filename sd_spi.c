@@ -9,6 +9,9 @@
 #define _CS_LOW()  PORT(SD_PIN_CS) &= ~__MSK(SD_PIN_CS)
 #define _CS_HIGH() PORT(SD_PIN_CS) |= __MSK(SD_PIN_CS)
 
+#define sd_cmd_00(arg) sd_cmd(0x00, arg, 0, 0)
+#define sd_cmd_41(arg) sd_cmd(0x41, arg, 0, 0)
+#define sd_cmd_55(arg) sd_cmd(0x55, arg, 0, 0)
 
 void _send_request(uint8_t cmd, uint32_t arg);
 sd_response_t _recieve_response(void);
@@ -38,9 +41,7 @@ sd_response_t sd_cmd(uint8_t cmd, uint32_t arg)
 	return rsp;
 }
 
-#define sd_cmd_00(arg) sd_cmd(0x00, arg)
-#define sd_cmd_41(arg) sd_cmd(0x41, arg)
-#define sd_cmd_55(arg) sd_cmd(0x55, arg)
+
 
 sd_response_t sd_cmd_08(uint32_t arg, sd_response_R7_t* rsp_R7)
 {
@@ -58,5 +59,6 @@ void _send_request(uint8_t cmd, uint32_t arg)
 
 sd_response_t _recieve_response(void)
 {
-
+	sd_response_t response;
+	return response;
 }

@@ -21,13 +21,14 @@ extern "C" {
 extern uint8_t w25x20cl_uid[8];
 
 
-extern int w25x20cl_ini(void);
+extern int8_t w25x20cl_ini(void);
 extern void w25x20cl_enable_wr(void);
 extern void w25x20cl_disable_wr(void);
 extern uint8_t w25x20cl_rd_status_reg(void);
 extern void w25x20cl_wr_status_reg(uint8_t val);
-extern void w25x20cl_rd_data(uint32_t addr, uint8_t* data, uint8_t cnt);
-extern void w25x20cl_page_program(uint32_t addr, uint8_t* data, uint8_t cnt);
+extern void w25x20cl_rd_data(uint32_t addr, uint8_t* data, uint16_t cnt);
+extern void w25x20cl_page_program(uint32_t addr, uint8_t* data, uint16_t cnt);
+extern void w25x20cl_page_program_P(uint32_t addr, uint8_t* data, uint16_t cnt);
 extern void w25x20cl_sector_erase(uint32_t addr);
 extern void w25x20cl_block32_erase(uint32_t addr);
 extern void w25x20cl_block64_erase(uint32_t addr);

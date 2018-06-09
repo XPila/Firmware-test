@@ -27,7 +27,7 @@ extern int pat9125_y;
 extern uint8_t pat9125_b;
 extern uint8_t pat9125_s;
 
-extern int pat9125_ini(void);
+extern int8_t pat9125_ini(void);
 extern int pat9125_update(void);
 extern int pat9125_update_y(void);
 
